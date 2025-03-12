@@ -1,0 +1,13 @@
+
+/2048/.vs
+*.tlog
+*.vcxproj
+*.filters
+*.user
+*.log
+*.idb
+*.pdb
+*.recipe
+*.ilk
+*.ipdb
+*.iobj
