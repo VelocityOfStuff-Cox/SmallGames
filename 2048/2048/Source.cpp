@@ -38,6 +38,7 @@ void shapeGenerator(Tile& tile);
 void possitionPicker(std::array<std::array<Tile, boardSize>, boardSize> &gameBoard);
 direction move(std::string input);
 bool moveChecker(direction move, std::array <std::array <Tile, boardSize>, boardSize>& gameBoard);
+void moveCombine(IntPair xy, int moveEdge, std::array <std::array <Tile, boardSize>, boardSize>& gameBoard);
 
 int main() {
 	
@@ -64,31 +65,7 @@ int main() {
 		std::getline(std::cin, input);
 
 		moveChecker(move(input), gameBoard);
-	//	possitionPicker(gameBoard);
-
-		std::array<IntPair, boardSize * boardSize> freeCells;
-		int freeIndex{ 0 };
-
-		for (int i{ 0 }; i < freeCells.size(); i++) {
-			freeCells.at(i) = {0, 0};
-		}
-
-		for (int i{ 0 }; i < boardSize; i++) {
-			for (int k{ 0 }; k < boardSize; k++) {
-				if (gameBoard.at(i).at(k).value == 0) {
-					freeCells.at(freeIndex).y = i;
-					freeCells.at(freeIndex).x = k;
-					freeIndex++;
-				}
-			}
-		}
-
-		std::random_device rd;
-		std::default_random_engine dre(rd());
-		std::uniform_int_distribution<int> uid(1, freeIndex);
-
-		IntPair choice{ freeCells.at(freeIndex) };
-		shapeGenerator(gameBoard.at(choice.x).at(choice.y));
+		possitionPicker(gameBoard);		
 	}	
 }
 
@@ -106,11 +83,11 @@ void shapeGenerator(Tile& tile) {
 
 void possitionPicker(std::array<std::array<Tile, boardSize>, boardSize>& gameBoard)
 {
-	std::array<IntPair, boardSize ^ 2> freeCells;
+	std::array<IntPair, boardSize* boardSize> freeCells;
 	int freeIndex{ 0 };
-	
-	for (auto freeCell : freeCells) {
-		freeCell = { 0, 0 };
+
+	for (int i{ 0 }; i < freeCells.size(); i++) {
+		freeCells.at(i) = { 0, 0 };
 	}
 
 	for (int i{ 0 }; i < boardSize; i++) {
@@ -122,12 +99,13 @@ void possitionPicker(std::array<std::array<Tile, boardSize>, boardSize>& gameBoa
 			}
 		}
 	}
-	
+
 	std::random_device rd;
 	std::default_random_engine dre(rd());
-	std::uniform_int_distribution<int> uid(1, freeIndex);
-	
-	IntPair choice{ freeCells.at(freeIndex) };
+	std::uniform_int_distribution<int> uid(0, freeIndex - 1);
+
+	IntPair choice{ freeCells.at(uid(dre)) };
+
 	shapeGenerator(gameBoard.at(choice.x).at(choice.y));
 	
 }
@@ -181,7 +159,7 @@ bool moveChecker(direction move, std::array<std::array<Tile, boardSize>, boardSi
 						gameBoard.at(moveEdge).at(k).shape = "[" + std::to_string(gameBoard.at(moveEdge).at(k).value) + "]";
 
 						gameBoard.at(i).at(k).value = 0; 
-						gameBoard.at(i).at(k).shape = "";
+						gameBoard.at(i).at(k).shape = "[ ]";
 						gameBoard.at(i).at(k).merged = false; 
 						
 						gameBoard.at(moveEdge).at(k).merged = true;
@@ -191,7 +169,7 @@ bool moveChecker(direction move, std::array<std::array<Tile, boardSize>, boardSi
 						gameBoard.at(moveEdge).at(k) = gameBoard.at(i).at(k);
 
 						gameBoard.at(i).at(k).value = 0;
-						gameBoard.at(i).at(k).shape = "";
+						gameBoard.at(i).at(k).shape = "[ ]";
 						gameBoard.at(i).at(k).merged = false;
 					}
 					else {
@@ -227,7 +205,7 @@ bool moveChecker(direction move, std::array<std::array<Tile, boardSize>, boardSi
 						gameBoard.at(moveEdge).at(k).shape = "[" + std::to_string(gameBoard.at(moveEdge).at(k).value) + "]";
 
 						gameBoard.at(i).at(k).value = 0;
-						gameBoard.at(i).at(k).shape = "";
+						gameBoard.at(i).at(k).shape = "[ ]";
 						gameBoard.at(i).at(k).merged = false;
 
 						gameBoard.at(moveEdge).at(k).merged = true;
@@ -237,7 +215,7 @@ bool moveChecker(direction move, std::array<std::array<Tile, boardSize>, boardSi
 						gameBoard.at(moveEdge).at(k) = gameBoard.at(i).at(k);
 
 						gameBoard.at(i).at(k).value = 0;
-						gameBoard.at(i).at(k).shape = "";
+						gameBoard.at(i).at(k).shape = "[ ]";
 						gameBoard.at(i).at(k).merged = false;
 					}
 					else {
@@ -273,7 +251,7 @@ bool moveChecker(direction move, std::array<std::array<Tile, boardSize>, boardSi
 						gameBoard.at(moveEdge).at(k).shape = "[" + std::to_string(gameBoard.at(moveEdge).at(k).value) + "]";
 
 						gameBoard.at(i).at(k).value = 0;
-						gameBoard.at(i).at(k).shape = "";
+						gameBoard.at(i).at(k).shape = "[ ]";
 						gameBoard.at(i).at(k).merged = false;
 
 						gameBoard.at(moveEdge).at(k).merged = true;
@@ -283,7 +261,7 @@ bool moveChecker(direction move, std::array<std::array<Tile, boardSize>, boardSi
 						gameBoard.at(moveEdge).at(k) = gameBoard.at(i).at(k);
 
 						gameBoard.at(i).at(k).value = 0;
-						gameBoard.at(i).at(k).shape = "";
+						gameBoard.at(i).at(k).shape = "[ ]";
 						gameBoard.at(i).at(k).merged = false;
 					}
 					else {
@@ -319,7 +297,7 @@ bool moveChecker(direction move, std::array<std::array<Tile, boardSize>, boardSi
 						gameBoard.at(moveEdge).at(k).shape = "[" + std::to_string(gameBoard.at(moveEdge).at(k).value) + "]";
 
 						gameBoard.at(i).at(k).value = 0;
-						gameBoard.at(i).at(k).shape = "";
+						gameBoard.at(i).at(k).shape = "[ ]";
 						gameBoard.at(i).at(k).merged = false;
 
 						gameBoard.at(moveEdge).at(k).merged = true;
@@ -329,7 +307,7 @@ bool moveChecker(direction move, std::array<std::array<Tile, boardSize>, boardSi
 						gameBoard.at(moveEdge).at(k) = gameBoard.at(i).at(k);
 
 						gameBoard.at(i).at(k).value = 0;
-						gameBoard.at(i).at(k).shape = "";
+						gameBoard.at(i).at(k).shape = "[ ]";
 						gameBoard.at(i).at(k).merged = false;
 					}
 					else {
@@ -344,4 +322,30 @@ bool moveChecker(direction move, std::array<std::array<Tile, boardSize>, boardSi
 		return false;
 	}
 	
+}
+
+void moveCombine(IntPair xy, IntPair moveXy, std::array <std::array <Tile, boardSize>, boardSize>& gameBoard)
+{
+
+
+	if (gameBoard.at(xy.y).at(xy.x).value == gameBoard.at(moveXy.y).at(moveXy.x).value && !gameBoard.at(moveXy.y).at(moveXy.x).merged) {
+
+		gameBoard.at(moveXy.y).at(moveXy.x).value += gameBoard.at(xy.y).at(xy.x).value;
+
+		gameBoard.at(moveXy.y).at(moveXy.x).shape = "[" + std::to_string(gameBoard.at(moveXy.y).at(moveXy.x).value) + "]";
+
+		gameBoard.at(xy.y).at(k).value = 0;
+		gameBoard.at(xy.y).at(k).shape = "[ ]";
+		gameBoard.at(xy.y).at(k).merged = false;
+
+		gameBoard.at(moveXy.y).at(moveXy.x).merged = true;
+	}
+	else if (gameBoard.at(moveXy.y).at(moveXy.x).value = 0) {
+
+		gameBoard.at(moveXy.y).at(moveXy.x) = gameBoard.at(i).at(k);
+
+		gameBoard.at(xy.y).at(k).value = 0;
+		gameBoard.at(xy.y).at(k).shape = "[ ]";
+		gameBoard.at(xy.y).at(k).merged = false;
+	}
 }
