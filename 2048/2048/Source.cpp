@@ -38,7 +38,7 @@ void shapeGenerator(Tile& tile);
 void possitionPicker(std::array<std::array<Tile, boardSize>, boardSize> &gameBoard);
 direction move(std::string input);
 bool moveChecker(direction move, std::array <std::array <Tile, boardSize>, boardSize>& gameBoard);
-void moveCombine(IntPair xy, int moveEdge, std::array <std::array <Tile, boardSize>, boardSize>& gameBoard);
+void moveCombine(IntPair start, IntPair end, std::array <std::array <Tile, boardSize>, boardSize>& gameBoard);
 
 int main() {
 	
@@ -130,6 +130,7 @@ direction move(std::string input)
 
 }
 
+
 bool moveChecker(direction move, std::array<std::array<Tile, boardSize>, boardSize>& gameBoard)
 {
 	switch (move)
@@ -147,7 +148,7 @@ bool moveChecker(direction move, std::array<std::array<Tile, boardSize>, boardSi
 						}
 						else if (j == 0 || gameBoard.at(i).at(k).value == gameBoard.at(j).at(k).value) {
 							moveEdge = j;
-							goto moveCombineA;
+							//goto moveCombineA;
 						}
 					}
 
@@ -324,28 +325,14 @@ bool moveChecker(direction move, std::array<std::array<Tile, boardSize>, boardSi
 	
 }
 
-void moveCombine(IntPair xy, IntPair moveXy, std::array <std::array <Tile, boardSize>, boardSize>& gameBoard)
+void moveCombine(IntPair start, IntPair end, std::array <std::array <Tile, boardSize>, boardSize>& gameBoard)
 {
-
-
-	if (gameBoard.at(xy.y).at(xy.x).value == gameBoard.at(moveXy.y).at(moveXy.x).value && !gameBoard.at(moveXy.y).at(moveXy.x).merged) {
-
-		gameBoard.at(moveXy.y).at(moveXy.x).value += gameBoard.at(xy.y).at(xy.x).value;
-
-		gameBoard.at(moveXy.y).at(moveXy.x).shape = "[" + std::to_string(gameBoard.at(moveXy.y).at(moveXy.x).value) + "]";
-
-		gameBoard.at(xy.y).at(k).value = 0;
-		gameBoard.at(xy.y).at(k).shape = "[ ]";
-		gameBoard.at(xy.y).at(k).merged = false;
-
-		gameBoard.at(moveXy.y).at(moveXy.x).merged = true;
+	if (/*start == end*/) {
+		//end += start
+		//null start
+		//rerender start and end
 	}
-	else if (gameBoard.at(moveXy.y).at(moveXy.x).value = 0) {
-
-		gameBoard.at(moveXy.y).at(moveXy.x) = gameBoard.at(i).at(k);
-
-		gameBoard.at(xy.y).at(k).value = 0;
-		gameBoard.at(xy.y).at(k).shape = "[ ]";
-		gameBoard.at(xy.y).at(k).merged = false;
+	else if(/*end == 0*/) {
+		
 	}
 }
